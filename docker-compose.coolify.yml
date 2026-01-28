@@ -28,7 +28,7 @@ services:
       # - "18790:18790"  # Bridge port (optional, for advanced setups)
 
     volumes:
-      - moltbot-config:/home/node/.clawdbot      # Config, sessions, credentials
+      - moltbot-config:/home/node/.moltbot       # Config, sessions, credentials (new path)
       - moltbot-workspace:/home/node/clawd       # Agent workspace
 
     environment:
@@ -79,6 +79,7 @@ services:
       - lan
       - --port
       - "18789"
+      - --allow-unconfigured
 
     # Health check for Coolify monitoring
     healthcheck:
