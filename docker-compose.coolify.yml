@@ -24,7 +24,7 @@ services:
     # image: ghcr.io/solovisionllc/moltbot:latest
 
     ports:
-      - "18789:18789"    # Gateway HTTP/WebSocket (required)
+      - "18889:18789"    # Gateway HTTP/WebSocket (host:container)
       # - "18790:18790"  # Bridge port (optional, for advanced setups)
 
     volumes:
