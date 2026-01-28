@@ -16,9 +16,9 @@ services:
     build:
       context: https://github.com/SoLoVisionLLC/moltbot.git#main
       dockerfile: Dockerfile
-      args:
-        # Uncomment to add extra packages (e.g., ffmpeg for media processing)
-        # CLAWDBOT_DOCKER_APT_PACKAGES: "ffmpeg"
+      # To add extra packages (e.g., ffmpeg), uncomment args section:
+      # args:
+      #   CLAWDBOT_DOCKER_APT_PACKAGES: "ffmpeg"
 
     # Option 2: Use a pre-built image (comment out 'build' section above)
     # image: ghcr.io/solovisionllc/moltbot:latest
