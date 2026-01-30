@@ -1,0 +1,1468 @@
+﻿{
+  "workspaceDir": "C:\\Users\\jerem\\clawd",
+  "plugins": [
+    {
+      "id": "bluebubbles",
+      "name": "@moltbot/bluebubbles",
+      "description": "Moltbot BlueBubbles channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\bluebubbles\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "copilot-proxy",
+      "name": "@moltbot/copilot-proxy",
+      "description": "Moltbot Copilot Proxy provider plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\copilot-proxy\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "diagnostics-otel",
+      "name": "@moltbot/diagnostics-otel",
+      "description": "Moltbot diagnostics OpenTelemetry exporter",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\diagnostics-otel\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "discord",
+      "name": "@moltbot/discord",
+      "description": "Moltbot Discord channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\discord\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "google-antigravity-auth",
+      "name": "Google Antigravity Auth",
+      "description": "OAuth flow for Google Antigravity (Cloud Code Assist)",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\google-antigravity-auth\\index.ts",
+      "origin": "bundled",
+      "enabled": true,
+      "status": "loaded",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [
+        "google-antigravity"
+      ],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
+    {
+      "id": "google-gemini-cli-auth",
+      "name": "@moltbot/google-gemini-cli-auth",
+      "description": "Moltbot Gemini CLI OAuth provider plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\google-gemini-cli-auth\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "googlechat",
+      "name": "@moltbot/googlechat",
+      "description": "Moltbot Google Chat channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\googlechat\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "imessage",
+      "name": "@moltbot/imessage",
+      "description": "Moltbot iMessage channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\imessage\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "line",
+      "name": "@moltbot/line",
+      "description": "Moltbot LINE channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\line\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "llm-task",
+      "name": "LLM Task",
+      "description": "Generic JSON-only LLM tool for structured tasks callable from workflows.",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\llm-task\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "defaultProvider": {
+            "type": "string"
+          },
+          "defaultModel": {
+            "type": "string"
+          },
+          "defaultAuthProfileId": {
+            "type": "string"
+          },
+          "allowedModels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Allowlist of provider/model keys like openai-codex/gpt-5.2."
+          },
+          "maxTokens": {
+            "type": "number"
+          },
+          "timeoutMs": {
+            "type": "number"
+          }
+        }
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "lobster",
+      "name": "Lobster",
+      "description": "Typed workflow tool with resumable approvals.",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\lobster\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "matrix",
+      "name": "@moltbot/matrix",
+      "description": "Moltbot Matrix channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\matrix\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "mattermost",
+      "name": "@moltbot/mattermost",
+      "description": "Moltbot Mattermost channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\mattermost\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "memory-core",
+      "name": "Memory (Core)",
+      "description": "File-backed memory search tools and CLI",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\memory-core\\index.ts",
+      "origin": "bundled",
+      "enabled": true,
+      "status": "loaded",
+      "toolNames": [
+        "memory_search",
+        "memory_get"
+      ],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [
+        "memory"
+      ],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "kind": "memory"
+    },
+    {
+      "id": "memory-lancedb",
+      "name": "@moltbot/memory-lancedb",
+      "description": "Moltbot LanceDB-backed long-term memory plugin with auto-recall/capture",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\memory-lancedb\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configUiHints": {
+        "embedding.apiKey": {
+          "label": "OpenAI API Key",
+          "sensitive": true,
+          "placeholder": "sk-proj-...",
+          "help": "API key for OpenAI embeddings (or use ${OPENAI_API_KEY})"
+        },
+        "embedding.model": {
+          "label": "Embedding Model",
+          "placeholder": "text-embedding-3-small",
+          "help": "OpenAI embedding model to use"
+        },
+        "dbPath": {
+          "label": "Database Path",
+          "placeholder": "~/.clawdbot/memory/lancedb",
+          "advanced": true
+        },
+        "autoCapture": {
+          "label": "Auto-Capture",
+          "help": "Automatically capture important information from conversations"
+        },
+        "autoRecall": {
+          "label": "Auto-Recall",
+          "help": "Automatically inject relevant memories into context"
+        }
+      },
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "embedding": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "apiKey": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string",
+                "enum": [
+                  "text-embedding-3-small",
+                  "text-embedding-3-large"
+                ]
+              }
+            },
+            "required": [
+              "apiKey"
+            ]
+          },
+          "dbPath": {
+            "type": "string"
+          },
+          "autoCapture": {
+            "type": "boolean"
+          },
+          "autoRecall": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "embedding"
+        ]
+      },
+      "kind": "memory",
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "msteams",
+      "name": "@moltbot/msteams",
+      "description": "Moltbot Microsoft Teams channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\msteams\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "nextcloud-talk",
+      "name": "@moltbot/nextcloud-talk",
+      "description": "Moltbot Nextcloud Talk channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\nextcloud-talk\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "nostr",
+      "name": "@moltbot/nostr",
+      "description": "Moltbot Nostr channel plugin for NIP-04 encrypted DMs",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\nostr\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "open-prose",
+      "name": "OpenProse",
+      "description": "OpenProse VM skill pack with a /prose slash command.",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\open-prose\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "qwen-portal-auth",
+      "name": "qwen-portal-auth",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\qwen-portal-auth\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "signal",
+      "name": "@moltbot/signal",
+      "description": "Moltbot Signal channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\signal\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "slack",
+      "name": "@moltbot/slack",
+      "description": "Moltbot Slack channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\slack\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "telegram",
+      "name": "@moltbot/telegram",
+      "description": "Moltbot Telegram channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\telegram\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "tlon",
+      "name": "@moltbot/tlon",
+      "description": "Moltbot Tlon/Urbit channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\tlon\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "twitch",
+      "name": "@moltbot/twitch",
+      "description": "Moltbot Twitch channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\twitch\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "voice-call",
+      "name": "@moltbot/voice-call",
+      "description": "Moltbot voice-call plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\voice-call\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configUiHints": {
+        "provider": {
+          "label": "Provider",
+          "help": "Use twilio, telnyx, or mock for dev/no-network."
+        },
+        "fromNumber": {
+          "label": "From Number",
+          "placeholder": "+15550001234"
+        },
+        "toNumber": {
+          "label": "Default To Number",
+          "placeholder": "+15550001234"
+        },
+        "inboundPolicy": {
+          "label": "Inbound Policy"
+        },
+        "allowFrom": {
+          "label": "Inbound Allowlist"
+        },
+        "inboundGreeting": {
+          "label": "Inbound Greeting",
+          "advanced": true
+        },
+        "telnyx.apiKey": {
+          "label": "Telnyx API Key",
+          "sensitive": true
+        },
+        "telnyx.connectionId": {
+          "label": "Telnyx Connection ID"
+        },
+        "telnyx.publicKey": {
+          "label": "Telnyx Public Key",
+          "sensitive": true
+        },
+        "twilio.accountSid": {
+          "label": "Twilio Account SID"
+        },
+        "twilio.authToken": {
+          "label": "Twilio Auth Token",
+          "sensitive": true
+        },
+        "outbound.defaultMode": {
+          "label": "Default Call Mode"
+        },
+        "outbound.notifyHangupDelaySec": {
+          "label": "Notify Hangup Delay (sec)",
+          "advanced": true
+        },
+        "serve.port": {
+          "label": "Webhook Port"
+        },
+        "serve.bind": {
+          "label": "Webhook Bind"
+        },
+        "serve.path": {
+          "label": "Webhook Path"
+        },
+        "tailscale.mode": {
+          "label": "Tailscale Mode",
+          "advanced": true
+        },
+        "tailscale.path": {
+          "label": "Tailscale Path",
+          "advanced": true
+        },
+        "tunnel.provider": {
+          "label": "Tunnel Provider",
+          "advanced": true
+        },
+        "tunnel.ngrokAuthToken": {
+          "label": "ngrok Auth Token",
+          "sensitive": true,
+          "advanced": true
+        },
+        "tunnel.ngrokDomain": {
+          "label": "ngrok Domain",
+          "advanced": true
+        },
+        "tunnel.allowNgrokFreeTierLoopbackBypass": {
+          "label": "Allow ngrok Free Tier (Loopback Bypass)",
+          "advanced": true
+        },
+        "streaming.enabled": {
+          "label": "Enable Streaming",
+          "advanced": true
+        },
+        "streaming.openaiApiKey": {
+          "label": "OpenAI Realtime API Key",
+          "sensitive": true,
+          "advanced": true
+        },
+        "streaming.sttModel": {
+          "label": "Realtime STT Model",
+          "advanced": true
+        },
+        "streaming.streamPath": {
+          "label": "Media Stream Path",
+          "advanced": true
+        },
+        "tts.provider": {
+          "label": "TTS Provider Override",
+          "help": "Deep-merges with messages.tts (Edge is ignored for calls).",
+          "advanced": true
+        },
+        "tts.openai.model": {
+          "label": "OpenAI TTS Model",
+          "advanced": true
+        },
+        "tts.openai.voice": {
+          "label": "OpenAI TTS Voice",
+          "advanced": true
+        },
+        "tts.openai.apiKey": {
+          "label": "OpenAI API Key",
+          "sensitive": true,
+          "advanced": true
+        },
+        "tts.elevenlabs.modelId": {
+          "label": "ElevenLabs Model ID",
+          "advanced": true
+        },
+        "tts.elevenlabs.voiceId": {
+          "label": "ElevenLabs Voice ID",
+          "advanced": true
+        },
+        "tts.elevenlabs.apiKey": {
+          "label": "ElevenLabs API Key",
+          "sensitive": true,
+          "advanced": true
+        },
+        "tts.elevenlabs.baseUrl": {
+          "label": "ElevenLabs Base URL",
+          "advanced": true
+        },
+        "publicUrl": {
+          "label": "Public Webhook URL",
+          "advanced": true
+        },
+        "skipSignatureVerification": {
+          "label": "Skip Signature Verification",
+          "advanced": true
+        },
+        "store": {
+          "label": "Call Log Store Path",
+          "advanced": true
+        },
+        "responseModel": {
+          "label": "Response Model",
+          "advanced": true
+        },
+        "responseSystemPrompt": {
+          "label": "Response System Prompt",
+          "advanced": true
+        },
+        "responseTimeoutMs": {
+          "label": "Response Timeout (ms)",
+          "advanced": true
+        }
+      },
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "telnyx",
+              "twilio",
+              "plivo",
+              "mock"
+            ]
+          },
+          "telnyx": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "apiKey": {
+                "type": "string"
+              },
+              "connectionId": {
+                "type": "string"
+              },
+              "publicKey": {
+                "type": "string"
+              }
+            }
+          },
+          "twilio": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "accountSid": {
+                "type": "string"
+              },
+              "authToken": {
+                "type": "string"
+              }
+            }
+          },
+          "plivo": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "authId": {
+                "type": "string"
+              },
+              "authToken": {
+                "type": "string"
+              }
+            }
+          },
+          "fromNumber": {
+            "type": "string",
+            "pattern": "^\\+[1-9]\\d{1,14}$"
+          },
+          "toNumber": {
+            "type": "string",
+            "pattern": "^\\+[1-9]\\d{1,14}$"
+          },
+          "inboundPolicy": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "allowlist",
+              "pairing",
+              "open"
+            ]
+          },
+          "allowFrom": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^\\+[1-9]\\d{1,14}$"
+            }
+          },
+          "inboundGreeting": {
+            "type": "string"
+          },
+          "outbound": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "defaultMode": {
+                "type": "string",
+                "enum": [
+                  "notify",
+                  "conversation"
+                ]
+              },
+              "notifyHangupDelaySec": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "maxDurationSeconds": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "silenceTimeoutMs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "transcriptTimeoutMs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "ringTimeoutMs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "maxConcurrentCalls": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "serve": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "port": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "bind": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            }
+          },
+          "tailscale": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "off",
+                  "serve",
+                  "funnel"
+                ]
+              },
+              "path": {
+                "type": "string"
+              }
+            }
+          },
+          "tunnel": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "ngrok",
+                  "tailscale-serve",
+                  "tailscale-funnel"
+                ]
+              },
+              "ngrokAuthToken": {
+                "type": "string"
+              },
+              "ngrokDomain": {
+                "type": "string"
+              },
+              "allowNgrokFreeTierLoopbackBypass": {
+                "type": "boolean"
+              }
+            }
+          },
+          "streaming": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "sttProvider": {
+                "type": "string",
+                "enum": [
+                  "openai-realtime"
+                ]
+              },
+              "openaiApiKey": {
+                "type": "string"
+              },
+              "sttModel": {
+                "type": "string"
+              },
+              "silenceDurationMs": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "vadThreshold": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "streamPath": {
+                "type": "string"
+              }
+            }
+          },
+          "publicUrl": {
+            "type": "string"
+          },
+          "skipSignatureVerification": {
+            "type": "boolean"
+          },
+          "stt": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "openai"
+                ]
+              },
+              "model": {
+                "type": "string"
+              }
+            }
+          },
+          "tts": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "auto": {
+                "type": "string",
+                "enum": [
+                  "off",
+                  "always",
+                  "inbound",
+                  "tagged"
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "final",
+                  "all"
+                ]
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "openai",
+                  "elevenlabs",
+                  "edge"
+                ]
+              },
+              "summaryModel": {
+                "type": "string"
+              },
+              "modelOverrides": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "allowText": {
+                    "type": "boolean"
+                  },
+                  "allowProvider": {
+                    "type": "boolean"
+                  },
+                  "allowVoice": {
+                    "type": "boolean"
+                  },
+                  "allowModelId": {
+                    "type": "boolean"
+                  },
+                  "allowVoiceSettings": {
+                    "type": "boolean"
+                  },
+                  "allowNormalization": {
+                    "type": "boolean"
+                  },
+                  "allowSeed": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "elevenlabs": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "apiKey": {
+                    "type": "string"
+                  },
+                  "baseUrl": {
+                    "type": "string"
+                  },
+                  "voiceId": {
+                    "type": "string"
+                  },
+                  "modelId": {
+                    "type": "string"
+                  },
+                  "seed": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4294967295
+                  },
+                  "applyTextNormalization": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "on",
+                      "off"
+                    ]
+                  },
+                  "languageCode": {
+                    "type": "string"
+                  },
+                  "voiceSettings": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "stability": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "similarityBoost": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "style": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "useSpeakerBoost": {
+                        "type": "boolean"
+                      },
+                      "speed": {
+                        "type": "number",
+                        "minimum": 0.5,
+                        "maximum": 2
+                      }
+                    }
+                  }
+                }
+              },
+              "openai": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "apiKey": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "voice": {
+                    "type": "string"
+                  }
+                }
+              },
+              "edge": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "voice": {
+                    "type": "string"
+                  },
+                  "lang": {
+                    "type": "string"
+                  },
+                  "outputFormat": {
+                    "type": "string"
+                  },
+                  "pitch": {
+                    "type": "string"
+                  },
+                  "rate": {
+                    "type": "string"
+                  },
+                  "volume": {
+                    "type": "string"
+                  },
+                  "saveSubtitles": {
+                    "type": "boolean"
+                  },
+                  "proxy": {
+                    "type": "string"
+                  },
+                  "timeoutMs": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 120000
+                  }
+                }
+              },
+              "prefsPath": {
+                "type": "string"
+              },
+              "maxTextLength": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "timeoutMs": {
+                "type": "integer",
+                "minimum": 1000,
+                "maximum": 120000
+              }
+            }
+          },
+          "store": {
+            "type": "string"
+          },
+          "responseModel": {
+            "type": "string"
+          },
+          "responseSystemPrompt": {
+            "type": "string"
+          },
+          "responseTimeoutMs": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "whatsapp",
+      "name": "@moltbot/whatsapp",
+      "description": "Moltbot WhatsApp channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\whatsapp\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "zalo",
+      "name": "@moltbot/zalo",
+      "description": "Moltbot Zalo channel plugin",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\zalo\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    },
+    {
+      "id": "zalouser",
+      "name": "@moltbot/zalouser",
+      "description": "Moltbot Zalo Personal Account plugin via zca-cli",
+      "version": "2026.1.27-beta.1",
+      "source": "C:\\Users\\jerem\\Sandbox\\moltbot\\extensions\\zalouser\\index.ts",
+      "origin": "bundled",
+      "enabled": false,
+      "status": "disabled",
+      "toolNames": [],
+      "hookNames": [],
+      "channelIds": [],
+      "providerIds": [],
+      "gatewayMethods": [],
+      "cliCommands": [],
+      "services": [],
+      "commands": [],
+      "httpHandlers": 0,
+      "hookCount": 0,
+      "configSchema": true,
+      "configJsonSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "error": "bundled (disabled by default)"
+    }
+  ],
+  "diagnostics": []
+}
