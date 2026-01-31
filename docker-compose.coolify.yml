@@ -28,8 +28,9 @@ services:
       # - "18790:18790"  # Bridge port (optional, for advanced setups)
 
     volumes:
-      - moltbot-config:/home/node/.moltbot       # Config, sessions, credentials (new path)
+      - moltbot-config:/home/node/.moltbot       # Config, sessions, credentials (legacy)
       - moltbot-legacy:/home/node/.clawdbot      # Legacy state dir (devices, cron, credentials)
+      - moltbot-openclaw:/home/node/.openclaw    # New openclaw config and state
       - moltbot-workspace:/home/node/clawd       # Agent workspace
 
     environment:
@@ -80,14 +81,16 @@ services:
         echo 'exec node /app/dist/index.js "$$@"' >> /usr/local/bin/moltbot
         chmod +x /usr/local/bin/moltbot
 
-        # Fix volume permissions (both new .moltbot and legacy .clawdbot paths)
-        mkdir -p /home/node/.moltbot /home/node/.clawdbot /home/node/clawd
-        chown -R node:node /home/node/.moltbot /home/node/.clawdbot /home/node/clawd
+        # Fix volume permissions (openclaw, moltbot, clawdbot, and workspace paths)
+        mkdir -p /home/node/.openclaw /home/node/.moltbot /home/node/.clawdbot /home/node/clawd
+        chown -R node:node /home/node/.openclaw /home/node/.moltbot /home/node/.clawdbot /home/node/clawd
 
-        # Create config with trusted proxies if it doesn't exist
-        CONFIG_FILE="/home/node/.moltbot/moltbot.json"
-        if [ ! -f "$$CONFIG_FILE" ]; then
-          cat > "$$CONFIG_FILE" << 'CONFIGEOF'
+        # Create config with trusted proxies if it doesn't exist (check both new and legacy paths)
+        OPENCLAW_CONFIG="/home/node/.openclaw/openclaw.json"
+        LEGACY_CONFIG="/home/node/.moltbot/moltbot.json"
+        if [ ! -f "$$OPENCLAW_CONFIG" ] && [ ! -f "$$LEGACY_CONFIG" ]; then
+          mkdir -p /home/node/.openclaw
+          cat > "$$OPENCLAW_CONFIG" << 'CONFIGEOF'
         {
           "gateway": {
             "port": 18789,
@@ -100,7 +103,7 @@ services:
           }
         }
         CONFIGEOF
-          chown node:node "$$CONFIG_FILE"
+          chown node:node "$$OPENCLAW_CONFIG"
         fi
 
         # Start gateway as node user
@@ -127,11 +130,14 @@ services:
 
 volumes:
   moltbot-config:
-    # Persistent storage for config, sessions, and credentials
+    # Persistent storage for config, sessions, and credentials (legacy .moltbot)
     # Coolify will create and manage this volume
   moltbot-legacy:
     # Persistent storage for legacy .clawdbot dir (devices, cron, credentials)
     # This persists device pairings across redeployments
+  moltbot-openclaw:
+    # Persistent storage for new openclaw config and state
+    # This is where the current version stores everything
   moltbot-workspace:
     # Persistent storage for agent workspace files
     # Coolify will create and manage this volume
