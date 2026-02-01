@@ -20,30 +20,44 @@ to the same container)_
 
 ## 1. Essentials (Start Here)
 
-| Command                   | Description                                                                                   |
-| :------------------------ | :-------------------------------------------------------------------------------------------- |
-| `solobot status`          | Show current status of the gateway, AI, and connections.                                      |
-| `solobot onboard`         | **Interactive Wizard** to set up the gateway, workspace, and skills.                          |
-| `solobot doctor --fix`    | **Auto-fix common issues** (permissions, config, tokens). Run this first if something breaks. |
-| `solobot logs`            | View real-time logs from the gateway.                                                         |
-| `solobot help`            | Show all available commands.                                                                  |
+| Command                           | Description                                                                                   |
+| :-------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `solobot status`                  | Show current status of the gateway, AI, and connections.                                      |
+| `solobot onboard`                 | **Interactive Wizard** to set up the gateway, workspace, and skills.                          |
+| `solobot doctor --fix`            | **Auto-fix common issues** (permissions, config, tokens). Run this first if something breaks. |
+| `solobot help`                    | Show all available commands.                                                                  |
 
-## 2. Artificial Intelligence & Agents
+## 2. Monitoring & Logs
+
+| Command                           | Description                                                                                   |
+| :-------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `solobot logs`                    | View the last 200 lines of gateway logs.                                                      |
+| `solobot logs --follow`           | **Stream logs in real-time** (ctrl+c to stop).                                                |
+| `solobot logs --limit 1000`       | View the last 1000 lines.                                                                     |
+| `solobot logs --json`             | Output logs as JSON (useful for filtering with `jq`).                                         |
+| `solobot logs --plain`            | Output logs without colors (useful for piping to files).                                      |
+| `solobot system event --text "X"` | Manually inject a system event (advanced).                                                    |
+
+## 3. Artificial Intelligence & Agents
 
 Manage the brains behind the bot and run agent tasks.
 
 | Command                               | Description                                                                     |
 | :------------------------------------ | :------------------------------------------------------------------------------ |
 | `solobot agent --message "..."`       | Run a single agent turn/command directly.                                       |
+| `solobot agent ... --verbose on`      | Run an agent command with **verbose debug output**.                             |
 | `solobot agents list`                 | List active AI agents.                                                          |
 | `solobot agents add`                  | Add a new isolated agent workspace.                                             |
 | `solobot agents set-identity`         | Customize an agent's name, emoji, and avatar.                                   |
 | `solobot models list`                 | List currently configured models.                                               |
+| `solobot models list --all`           | List **all** available models (Anthropic, OpenAI, etc).                         |
 | `solobot models set <model_id>`       | Switch the default model (e.g., `solobot models set claude-3-5-sonnet-latest`). |
+| `solobot models auth login`           | **Login to a model provider** (OAuth/API Key).                                  |
+| `solobot models auth add`             | Interactive helper to add a provider token.                                     |
 | `solobot models scan`                 | Scan for new free/paid models from OpenRouter.                                  |
 | `solobot memory status`               | Check the status of the AI's long-term memory (Vector DB).                      |
 
-## 3. Configuration
+## 4. Configuration
 
 | Command                 | Description                                    |
 | :---------------------- | :--------------------------------------------- |
@@ -53,7 +67,7 @@ Manage the brains behind the bot and run agent tasks.
 | `solobot security`      | Manage security tokens and API keys.           |
 | `solobot update`        | Check for and apply CLI updates.               |
 
-## 4. Connectivity & Pairing
+## 5. Connectivity & Pairing
 
 Connect your bot to the world (Telegram, WhatsApp, etc).
 
@@ -67,7 +81,7 @@ Connect your bot to the world (Telegram, WhatsApp, etc).
 | `solobot channels list`                   | List active communication channels.                         |
 | `solobot dashboard`                       | Get the URL for the Web Control UI.                         |
 
-## 5. Messaging & Interaction
+## 6. Messaging & Interaction
 
 Send messages and interact with users directly.
 
@@ -78,7 +92,7 @@ Send messages and interact with users directly.
 | `solobot message react`                    | React to a specific message ID with an emoji.         |
 | `solobot message pin`                      | Pin a message in a channel.                           |
 
-## 6. Advanced & System
+## 7. Advanced & System
 
 | Command                | Description                                            |
 | :--------------------- | :----------------------------------------------------- |
@@ -101,9 +115,14 @@ solobot devices approve <request-id>
 **"The bot isn't replying"**
 
 ```bash
-solobot logs
-# Check for errors. If it looks stuck:
-sudo docker restart $(sudo docker ps -q --filter name=moltbot)
+solobot logs --follow
+# Check for realtime errors.
+```
+
+**"Debugging an Agent Response"**
+
+```bash
+solobot agent --to +123456789 --message "why did you say that?" --verbose on
 ```
 
 **"Permissions errors in logs"**
