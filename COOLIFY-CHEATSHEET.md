@@ -97,6 +97,8 @@ Send messages and interact with users directly.
 | Command                | Description                                            |
 | :--------------------- | :----------------------------------------------------- |
 | `solobot system`       | View system health and heartbeat events.               |
+| `solobot daemon restart`| **Native Install**: Restart the systemd service.      |
+| `docker restart moltbot`| **Docker**: Restart the container.                    |
 | `solobot cron list`    | List scheduled background tasks.                       |
 | `solobot plugins list` | Manage installed plugins.                              |
 | `solobot sandbox`      | Manage the code execution sandbox (Docker/Bubblewrap). |
