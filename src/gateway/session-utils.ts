@@ -518,6 +518,9 @@ export function listSessionsFromStore(params: {
       ? Math.max(1, Math.floor(opts.activeMinutes))
       : undefined;
 
+  // Get default agent ID for matching sessions without agent prefix
+  const defaultAgentId = resolveDefaultStoreAgentId(cfg);
+
   let sessions = Object.entries(store)
     .filter(([key]) => {
       if (!includeGlobal && key === "global") return false;
@@ -525,8 +528,12 @@ export function listSessionsFromStore(params: {
       if (agentId) {
         if (key === "global" || key === "unknown") return false;
         const parsed = parseAgentSessionKey(key);
-        if (!parsed) return false;
-        return normalizeAgentId(parsed.agentId) === agentId;
+        if (parsed) {
+          return normalizeAgentId(parsed.agentId) === agentId;
+        }
+        // Fallback: sessions stored by initSessionState without agent prefix
+        // belong to the default agent
+        return agentId === defaultAgentId;
       }
       return true;
     })
