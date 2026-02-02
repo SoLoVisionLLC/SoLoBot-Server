@@ -161,7 +161,18 @@ export function loadSessionEntry(sessionKey: string) {
   const agentId = resolveSessionStoreAgentId(cfg, canonicalKey);
   const storePath = resolveStorePath(sessionCfg?.store, { agentId });
   const store = loadSessionStore(storePath);
-  const entry = store[canonicalKey];
+  let entry = store[canonicalKey];
+
+  // Fallback: initSessionState (in auto-reply/reply/session.ts) stores sessions
+  // using resolveSessionKey which returns a lowercased key without agent prefix.
+  // Try that format if the canonical key is not found.
+  if (!entry) {
+    const lowercasedKey = sessionKey.trim().toLowerCase();
+    if (lowercasedKey !== canonicalKey && store[lowercasedKey]) {
+      entry = store[lowercasedKey];
+    }
+  }
+
   return { cfg, storePath, store, entry, canonicalKey };
 }
 
