@@ -20,18 +20,20 @@ services:
       # args:
       #   CLAWDBOT_DOCKER_APT_PACKAGES: "ffmpeg"
 
-    # Option 2: Use a pre-built image (comment out 'build' section above)
-    # image: ghcr.io/solovisionllc/moltbot:latest
+      # Option 2: Use a pre-built image (comment out 'build' section above)
+      # image: ghcr.io/solovisionllc/moltbot:latest
 
     ports:
-      - "18889:18789"    # Gateway HTTP/WebSocket (host:container)
+      - "18889:18789" # Gateway HTTP/WebSocket (host:container)
       # - "18790:18790"  # Bridge port (optional, for advanced setups)
 
     volumes:
-      - moltbot-config:/home/node/.moltbot       # Config, sessions, credentials (legacy)
-      - moltbot-legacy:/home/node/.clawdbot      # Legacy state dir (devices, cron, credentials)
-      - moltbot-openclaw:/home/node/.openclaw    # New openclaw config and state
-      - moltbot-workspace:/home/node/clawd       # Agent workspace
+      # Using bind mounts (host paths) instead of named volumes
+      # This allows Dashboard and other services to share the same config files
+      - /home/node/.moltbot:/home/node/.moltbot # Config, sessions, credentials (legacy)
+      - /home/node/.clawdbot:/home/node/.clawdbot # Legacy state dir (devices, cron, credentials)
+      - /home/node/.openclaw:/home/node/.openclaw # New openclaw config and state
+      - /home/node/clawd:/home/node/clawd # Agent workspace
 
     environment:
       # === REQUIRED ===
@@ -55,7 +57,6 @@ services:
       # === CHANNELS (configure as needed) ===
       # Telegram
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
-
       # Discord
       # DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-}
 
@@ -70,7 +71,7 @@ services:
       # Brave Search (for web_search tool)
       # BRAVE_API_KEY: ${BRAVE_API_KEY:-}
 
-    # Run as root to fix volume permissions and create config, then drop to node user
+      # Run as root to fix volume permissions and create config, then drop to node user
     user: root
     command:
       - /bin/sh
@@ -111,7 +112,7 @@ services:
 
     # Health check for Coolify monitoring
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:18789/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:18789/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -127,60 +128,53 @@ services:
           memory: 2G
         reservations:
           memory: 512M
+    # NOTE: Using bind mounts (host paths) instead of named volumes
+    # The directories on the host are:
+    #   /home/node/.moltbot   - Legacy config
+    #   /home/node/.clawdbot  - Legacy state
+    #   /home/node/.openclaw  - Current config and state
+    #   /home/node/clawd      - Agent workspace
 
-volumes:
-  moltbot-config:
-    # Persistent storage for config, sessions, and credentials (legacy .moltbot)
-    # Coolify will create and manage this volume
-  moltbot-legacy:
-    # Persistent storage for legacy .clawdbot dir (devices, cron, credentials)
-    # This persists device pairings across redeployments
-  moltbot-openclaw:
-    # Persistent storage for new openclaw config and state
-    # This is where the current version stores everything
-  moltbot-workspace:
-    # Persistent storage for agent workspace files
-    # Coolify will create and manage this volume
 
-###############################################################################
-# COOLIFY ENVIRONMENT VARIABLES
-# Set these in Coolify's UI under Environment Variables:
-#
-# Required:
-#   GATEWAY_TOKEN          - Secure random token (generate with: openssl rand -hex 32)
-#   OPENROUTER_API_KEY     - Your OpenRouter API key (from openrouter.ai/keys)
-#
-# Optional (channels):
-#   TELEGRAM_BOT_TOKEN     - From @BotFather
-#   DISCORD_BOT_TOKEN      - From Discord Developer Portal
-#
-# Optional (services):
-#   BRAVE_API_KEY          - For web search capability
-#
-###############################################################################
-# FIRST-TIME SETUP
-#
-# After deployment, you need to configure channels. Two options:
-#
-# Option A: SSH into container via Coolify terminal
-#   moltbot configure
-#
-# Option B: Pre-create config file
-#   Create moltbot.json and mount it, or copy into the moltbot-config volume
-#
-# Example moltbot.json:
-# {
-#   "gateway": {
-#     "port": 18789,
-#     "bind": "lan",
-#     "auth": { "mode": "token" }
-#   },
-#   "channels": {
-#     "telegram": {
-#       "token": "${TELEGRAM_BOT_TOKEN}",
-#       "allowFrom": ["YOUR_TELEGRAM_USER_ID"]
-#     }
-#   },
-#   "default_model": "openrouter/anthropic/claude-opus-4.5"
-# }
-###############################################################################
+    ###############################################################################
+    # COOLIFY ENVIRONMENT VARIABLES
+    # Set these in Coolify's UI under Environment Variables:
+    #
+    # Required:
+    #   GATEWAY_TOKEN          - Secure random token (generate with: openssl rand -hex 32)
+    #   OPENROUTER_API_KEY     - Your OpenRouter API key (from openrouter.ai/keys)
+    #
+    # Optional (channels):
+    #   TELEGRAM_BOT_TOKEN     - From @BotFather
+    #   DISCORD_BOT_TOKEN      - From Discord Developer Portal
+    #
+    # Optional (services):
+    #   BRAVE_API_KEY          - For web search capability
+    #
+    ###############################################################################
+    # FIRST-TIME SETUP
+    #
+    # After deployment, you need to configure channels. Two options:
+    #
+    # Option A: SSH into container via Coolify terminal
+    #   moltbot configure
+    #
+    # Option B: Pre-create config file
+    #   Create moltbot.json and mount it, or copy into the moltbot-config volume
+    #
+    # Example moltbot.json:
+    # {
+    #   "gateway": {
+    #     "port": 18789,
+    #     "bind": "lan",
+    #     "auth": { "mode": "token" }
+    #   },
+    #   "channels": {
+    #     "telegram": {
+    #       "token": "${TELEGRAM_BOT_TOKEN}",
+    #       "allowFrom": ["YOUR_TELEGRAM_USER_ID"]
+    #     }
+    #   },
+    #   "default_model": "openrouter/anthropic/claude-opus-4.5"
+    # }
+    ###############################################################################
