@@ -100,7 +100,7 @@ Send messages and interact with users directly.
 | `solobot daemon restart`| **Native Install**: Restart the systemd service.      |
 | `docker restart moltbot`| **Docker**: Restart the container.                    |
 | `solobot cron list`    | List scheduled background tasks.                       |
-| `solobot plugins list` | Manage installed plugins.                              |
+| `solobot plugins list` | Manage installed,9ob  plugins.                              |
 | `solobot sandbox`      | Manage the code execution sandbox (Docker/Bubblewrap). |
 | `solobot uninstall`    | Clean up and uninstall the service (use with caution). |
 
