@@ -1,4 +1,4 @@
-import * as fs from "node:fs";
+import type { GatewayRequestHandlers } from "./types.js";
 import { loadConfig } from "../../config/config.js";
 import {
   OPENAI_TTS_MODELS,
@@ -17,7 +17,6 @@ import {
 } from "../../tts/tts.js";
 import { ErrorCodes, errorShape } from "../protocol/index.js";
 import { formatForLog } from "../ws-log.js";
-import type { GatewayRequestHandlers } from "./types.js";
 
 export const ttsHandlers: GatewayRequestHandlers = {
   "tts.status": async ({ respond }) => {
@@ -67,8 +66,6 @@ export const ttsHandlers: GatewayRequestHandlers = {
       respond(false, undefined, errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)));
     }
   },
-
-
   "tts.convert": async ({ params, respond }) => {
     const text = typeof params.text === "string" ? params.text.trim() : "";
     if (!text) {
@@ -84,17 +81,8 @@ export const ttsHandlers: GatewayRequestHandlers = {
       const channel = typeof params.channel === "string" ? params.channel.trim() : undefined;
       const result = await textToSpeech({ text, cfg, channel });
       if (result.success && result.audioPath) {
-        let audioBase64: string | undefined;
-        try {
-            audioBase64 = fs.readFileSync(result.audioPath).toString("base64");
-            // Optionally delete the temp file if we are just serving it back immediately
-            // But we'll leave it for now to avoid breaking other potential flows
-        } catch (e) {
-            // failed to read
-        }
         respond(true, {
           audioPath: result.audioPath,
-          audioBase64, 
           provider: result.provider,
           outputFormat: result.outputFormat,
           voiceCompatible: result.voiceCompatible,
@@ -162,54 +150,6 @@ export const ttsHandlers: GatewayRequestHandlers = {
         ],
         active: getTtsProvider(config, prefsPath),
       });
-    } catch (err) {
-      respond(false, undefined, errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)));
-    }
-  },
-
-  "tts.elevenlabs.voices": async ({ respond }) => {
-    try {
-      const cfg = loadConfig();
-      const config = resolveTtsConfig(cfg);
-      const apiKey = resolveTtsApiKey(config, "elevenlabs");
-
-      if (!apiKey) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.UNAVAILABLE, "ElevenLabs API key not configured"),
-        );
-        return;
-      }
-
-      const baseUrl = config.elevenlabs.baseUrl || "https://api.elevenlabs.io";
-      const response = await fetch(`${baseUrl}/v1/voices`, {
-        method: "GET",
-        headers: {
-          "xi-api-key": apiKey,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        respond(
-          false,
-          undefined,
-          errorShape(ErrorCodes.UNAVAILABLE, `ElevenLabs API error: ${response.status}`),
-        );
-        return;
-      }
-
-      const data = await response.json();
-      const voices = (data.voices || []).map((voice: any) => ({
-        voice_id: voice.voice_id,
-        name: voice.name,
-        category: voice.category,
-        preview_url: voice.preview_url,
-        labels: voice.labels,
-      }));
-
-      respond(true, { voices });
     } catch (err) {
       respond(false, undefined, errorShape(ErrorCodes.UNAVAILABLE, formatForLog(err)));
     }
