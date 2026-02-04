@@ -73,16 +73,8 @@ export type ChatProps = {
 const COMPACTION_TOAST_DURATION_MS = 5000;
 
 function adjustTextareaHeight(el: HTMLTextAreaElement) {
-  const style = window.getComputedStyle(el);
-  const lineHeight = parseFloat(style.lineHeight || "20");
-  const paddingTop = parseFloat(style.paddingTop || "0");
-  const paddingBottom = parseFloat(style.paddingBottom || "0");
-  const maxHeight = lineHeight * 5 + paddingTop + paddingBottom;
-
   el.style.height = "auto";
-  const nextHeight = Math.min(el.scrollHeight, maxHeight);
-  el.style.height = `${Math.max(nextHeight, lineHeight + paddingTop + paddingBottom)}px`;
-  el.style.overflowY = el.scrollHeight > maxHeight ? "auto" : "hidden";
+  el.style.height = `${el.scrollHeight}px`;
 }
 
 function renderCompactionIndicator(status: CompactionIndicatorStatus | null | undefined) {
