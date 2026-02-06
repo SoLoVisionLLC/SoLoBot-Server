@@ -447,8 +447,14 @@ class ChatController(
       array.mapNotNull { item ->
         val obj = item.asObjectOrNull() ?: return@mapNotNull null
         val role = obj["role"].asStringOrNull() ?: return@mapNotNull null
-        val content = obj["content"].asArrayOrNull()?.mapNotNull(::parseMessageContent) ?: emptyList()
+        val content = obj["content"].asArrayOrNull()?.mapNotNull { el ->
+          parseMessageContent(el, role)
+        } ?: emptyList()
         val ts = obj["timestamp"].asLongOrNull()
+        // Skip messages that become empty after sanitization
+        if (content.all { it.type == "text" && it.text.isNullOrBlank() }) {
+          return@mapNotNull null
+        }
         ChatMessage(
           id = UUID.randomUUID().toString(),
           role = role,
@@ -460,11 +466,13 @@ class ChatController(
     return ChatHistory(sessionKey = sessionKey, sessionId = sid, thinkingLevel = thinkingLevel, messages = messages)
   }
 
-  private fun parseMessageContent(el: JsonElement): ChatMessageContent? {
+  private fun parseMessageContent(el: JsonElement, role: String): ChatMessageContent? {
     val obj = el.asObjectOrNull() ?: return null
     val type = obj["type"].asStringOrNull() ?: "text"
     return if (type == "text") {
-      ChatMessageContent(type = "text", text = obj["text"].asStringOrNull())
+      val rawText = obj["text"].asStringOrNull()
+      val sanitizedText = ChatSanitize.sanitizeMessageContent(role, rawText)
+      ChatMessageContent(type = "text", text = sanitizedText)
     } else {
       ChatMessageContent(
         type = type,
