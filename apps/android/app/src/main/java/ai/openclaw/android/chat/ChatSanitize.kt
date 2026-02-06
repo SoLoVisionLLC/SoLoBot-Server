@@ -65,6 +65,23 @@ object ChatSanitize {
     return text
   }
 
+  // Placeholder texts the server uses for image-only messages
+  private val IMAGE_PLACEHOLDER_TEXTS = listOf(
+    "🖼️ Image",
+    "🖼 Image",
+    "Image",
+    "See attached.",
+    "See attached",
+  )
+
+  /**
+   * Check if text is just an image placeholder that should be hidden
+   * when the message also contains actual image content.
+   */
+  fun isImagePlaceholder(text: String): Boolean {
+    return IMAGE_PLACEHOLDER_TEXTS.any { it.equals(text.trim(), ignoreCase = true) }
+  }
+
   /**
    * Sanitize message content based on role.
    */

@@ -34,6 +34,7 @@ import androidx.compose.foundation.Image
 import ai.openclaw.android.chat.ChatMessage
 import ai.openclaw.android.chat.ChatMessageContent
 import ai.openclaw.android.chat.ChatPendingToolCall
+import ai.openclaw.android.chat.ChatSanitize
 import ai.openclaw.android.tools.ToolDisplayRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -69,11 +70,16 @@ fun ChatMessageBubble(message: ChatMessage) {
 
 @Composable
 private fun ChatMessageBody(content: List<ChatMessageContent>, textColor: Color) {
+  // Check if this message has image content alongside text
+  val hasImages = content.any { it.type != "text" && it.base64 != null }
+
   Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
     for (part in content) {
       when (part.type) {
         "text" -> {
           val text = part.text ?: continue
+          // Hide placeholder text like "🖼️ Image" when message has actual images
+          if (hasImages && ChatSanitize.isImagePlaceholder(text)) continue
           ChatMarkdown(text = text, textColor = textColor)
         }
         else -> {

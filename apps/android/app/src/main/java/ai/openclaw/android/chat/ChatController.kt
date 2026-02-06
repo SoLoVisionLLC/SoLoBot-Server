@@ -469,18 +469,52 @@ class ChatController(
   private fun parseMessageContent(el: JsonElement, role: String): ChatMessageContent? {
     val obj = el.asObjectOrNull() ?: return null
     val type = obj["type"].asStringOrNull() ?: "text"
-    return if (type == "text") {
+
+    if (type == "text") {
       val rawText = obj["text"].asStringOrNull()
       val sanitizedText = ChatSanitize.sanitizeMessageContent(role, rawText)
-      ChatMessageContent(type = "text", text = sanitizedText)
-    } else {
-      ChatMessageContent(
-        type = type,
-        mimeType = obj["mimeType"].asStringOrNull(),
-        fileName = obj["fileName"].asStringOrNull(),
-        base64 = obj["content"].asStringOrNull(),
-      )
+      return ChatMessageContent(type = "text", text = sanitizedText)
     }
+
+    // For image content, check multiple formats:
+    // Format 1 (OpenClaw): {"type":"image","content":"base64...","mimeType":"image/jpeg"}
+    // Format 2 (Claude API): {"type":"image","source":{"type":"base64","media_type":"image/jpeg","data":"base64..."}}
+    // Format 3 (input_image): {"type":"input_image","image_url":{"url":"data:image/jpeg;base64,..."}}
+    var base64 = obj["content"].asStringOrNull()
+    var mimeType = obj["mimeType"].asStringOrNull() ?: obj["media_type"].asStringOrNull()
+
+    // Claude API source format
+    if (base64 == null) {
+      val source = obj["source"].asObjectOrNull()
+      if (source != null) {
+        base64 = source["data"].asStringOrNull()
+        if (mimeType == null) mimeType = source["media_type"].asStringOrNull()
+      }
+    }
+
+    // OpenAI image_url format (data URL)
+    if (base64 == null && (type == "input_image" || type == "image_url")) {
+      val imageUrl = obj["image_url"].asObjectOrNull()
+      val url = imageUrl?.get("url").asStringOrNull() ?: obj["url"].asStringOrNull()
+      if (url != null && url.startsWith("data:")) {
+        val commaIdx = url.indexOf(',')
+        if (commaIdx > 0) {
+          base64 = url.substring(commaIdx + 1)
+          if (mimeType == null) {
+            val header = url.substring(0, commaIdx)
+            val mimeMatch = Regex("data:([^;]+)").find(header)
+            mimeType = mimeMatch?.groupValues?.getOrNull(1)
+          }
+        }
+      }
+    }
+
+    return ChatMessageContent(
+      type = if (base64 != null) "image" else type,
+      mimeType = mimeType,
+      fileName = obj["fileName"].asStringOrNull(),
+      base64 = base64,
+    )
   }
 
   private fun parseSessions(jsonString: String): List<ChatSessionEntry> {
