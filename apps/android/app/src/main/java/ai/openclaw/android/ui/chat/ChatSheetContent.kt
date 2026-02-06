@@ -38,6 +38,7 @@ fun ChatSheetContent(viewModel: MainViewModel) {
   val streamingAssistantText by viewModel.chatStreamingAssistantText.collectAsState()
   val pendingToolCalls by viewModel.chatPendingToolCalls.collectAsState()
   val sessions by viewModel.chatSessions.collectAsState()
+  val draftText by viewModel.chatDraftText.collectAsState()
 
   LaunchedEffect(mainSessionKey) {
     viewModel.loadChat(mainSessionKey)
@@ -100,6 +101,8 @@ fun ChatSheetContent(viewModel: MainViewModel) {
         viewModel.refreshChat()
         viewModel.refreshChatSessions(limit = 200)
       },
+      draftText = draftText,
+      onDraftTextChange = { viewModel.setChatDraftText(it) },
       onAbort = { viewModel.abortChat() },
       onSend = { text ->
         val outgoing =

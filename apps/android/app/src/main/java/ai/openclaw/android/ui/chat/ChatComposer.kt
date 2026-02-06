@@ -67,10 +67,12 @@ fun ChatComposer(
   onSetThinkingLevel: (level: String) -> Unit,
   onSelectSession: (sessionKey: String) -> Unit,
   onRefresh: () -> Unit,
+  draftText: String,
+  onDraftTextChange: (String) -> Unit,
   onAbort: () -> Unit,
   onSend: (text: String) -> Unit,
 ) {
-  var input by rememberSaveable { mutableStateOf("") }
+  var input by rememberSaveable(draftText) { mutableStateOf(draftText) }
   var showThinkingMenu by remember { mutableStateOf(false) }
   var showSessionMenu by remember { mutableStateOf(false) }
 
@@ -153,7 +155,10 @@ fun ChatComposer(
 
       OutlinedTextField(
         value = input,
-        onValueChange = { input = it },
+        onValueChange = {
+          input = it
+          onDraftTextChange(it)
+        },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text("Message OpenClaw…") },
         minLines = 2,
@@ -179,6 +184,7 @@ fun ChatComposer(
           FilledTonalIconButton(onClick = {
             val text = input
             input = ""
+            onDraftTextChange("")
             onSend(text)
           }, enabled = canSend) {
             Icon(Icons.Default.ArrowUpward, contentDescription = "Send")

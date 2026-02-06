@@ -56,6 +56,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
   val chatSessionKey: StateFlow<String> = runtime.chatSessionKey
   val chatSessionId: StateFlow<String?> = runtime.chatSessionId
   val chatMessages = runtime.chatMessages
+
+  // Draft text survives activity recreation (image picker, rotation, etc.)
+  private val _chatDraftText = kotlinx.coroutines.flow.MutableStateFlow("")
+  val chatDraftText: StateFlow<String> = _chatDraftText
+  fun setChatDraftText(text: String) { _chatDraftText.value = text }
   val chatError: StateFlow<String?> = runtime.chatError
   val chatHealthOk: StateFlow<Boolean> = runtime.chatHealthOk
   val chatThinkingLevel: StateFlow<String> = runtime.chatThinkingLevel
