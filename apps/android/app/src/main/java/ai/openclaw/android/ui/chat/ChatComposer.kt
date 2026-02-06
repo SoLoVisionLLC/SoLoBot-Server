@@ -1,5 +1,8 @@
 package ai.openclaw.android.ui.chat
 
+import android.graphics.BitmapFactory
+import android.util.Base64
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +15,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.AttachFile
@@ -254,7 +266,8 @@ private fun AttachmentsStrip(
     horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
     for (att in attachments) {
-      AttachmentChip(
+      AttachmentThumbnail(
+        base64 = att.base64,
         fileName = att.fileName,
         onRemove = { onRemoveAttachment(att.id) },
       )
@@ -263,22 +276,55 @@ private fun AttachmentsStrip(
 }
 
 @Composable
-private fun AttachmentChip(fileName: String, onRemove: () -> Unit) {
-  Surface(
-    shape = RoundedCornerShape(999.dp),
-    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
-  ) {
-    Row(
-      modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-      verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+private fun AttachmentThumbnail(base64: String, fileName: String, onRemove: () -> Unit) {
+  var bitmap by remember(base64) { mutableStateOf<androidx.compose.ui.graphics.ImageBitmap?>(null) }
+
+  LaunchedEffect(base64) {
+    bitmap = withContext(Dispatchers.Default) {
+      try {
+        val bytes = Base64.decode(base64, Base64.DEFAULT)
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap()
+      } catch (_: Throwable) { null }
+    }
+  }
+
+  Box {
+    Surface(
+      shape = RoundedCornerShape(12.dp),
+      color = MaterialTheme.colorScheme.surfaceContainerHigh,
+      modifier = Modifier.size(64.dp),
     ) {
-      Text(text = fileName, style = MaterialTheme.typography.bodySmall, maxLines = 1)
+      val img = bitmap
+      if (img != null) {
+        Image(
+          bitmap = img,
+          contentDescription = fileName,
+          contentScale = ContentScale.Crop,
+          modifier = Modifier.size(64.dp).clip(RoundedCornerShape(12.dp)),
+        )
+      } else {
+        Box(modifier = Modifier.size(64.dp), contentAlignment = Alignment.Center) {
+          Text("🖼️", style = MaterialTheme.typography.titleLarge)
+        }
+      }
+    }
+    // Remove button in top-right corner
+    Surface(
+      shape = androidx.compose.foundation.shape.CircleShape,
+      color = MaterialTheme.colorScheme.error,
+      modifier = Modifier
+        .size(20.dp)
+        .align(Alignment.TopEnd),
+    ) {
       FilledTonalIconButton(
         onClick = onRemove,
-        modifier = Modifier.size(30.dp),
+        modifier = Modifier.size(20.dp),
+        colors = IconButtonDefaults.filledTonalIconButtonColors(
+          containerColor = MaterialTheme.colorScheme.error,
+          contentColor = MaterialTheme.colorScheme.onError,
+        ),
       ) {
-        Text("×")
+        Text("×", style = MaterialTheme.typography.labelSmall)
       }
     }
   }
