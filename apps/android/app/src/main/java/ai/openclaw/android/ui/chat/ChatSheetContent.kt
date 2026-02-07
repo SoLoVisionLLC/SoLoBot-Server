@@ -39,6 +39,7 @@ fun ChatSheetContent(viewModel: MainViewModel) {
   val pendingToolCalls by viewModel.chatPendingToolCalls.collectAsState()
   val sessions by viewModel.chatSessions.collectAsState()
   val draftText by viewModel.chatDraftText.collectAsState()
+  val sharedImages by viewModel.sharedImages.collectAsState()
 
   LaunchedEffect(mainSessionKey) {
     viewModel.loadChat(mainSessionKey)
@@ -50,6 +51,14 @@ fun ChatSheetContent(viewModel: MainViewModel) {
   val scope = rememberCoroutineScope()
 
   val attachments = remember { mutableStateListOf<PendingImageAttachment>() }
+
+  // Pick up images shared from external apps (screenshot share, etc.)
+  LaunchedEffect(sharedImages) {
+    if (sharedImages.isNotEmpty()) {
+      attachments.addAll(sharedImages)
+      viewModel.clearSharedImages()
+    }
+  }
 
   val pickImages =
     rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->

@@ -75,6 +75,15 @@ fun RootScreen(viewModel: MainViewModel) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val safeOverlayInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
   val context = LocalContext.current
+
+  // Auto-open chat sheet when images are shared from external apps
+  val sharedImages by viewModel.sharedImages.collectAsState()
+  LaunchedEffect(sharedImages) {
+    if (sharedImages.isNotEmpty() && sheet != Sheet.Chat) {
+      sheet = Sheet.Chat
+    }
+  }
+
   val serverName by viewModel.serverName.collectAsState()
   val statusText by viewModel.statusText.collectAsState()
   val cameraHud by viewModel.cameraHud.collectAsState()

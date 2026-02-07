@@ -1,14 +1,24 @@
 package ai.openclaw.android
 
 import android.app.Application
+import android.content.ContentResolver
+import android.net.Uri
+import android.util.Base64
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import ai.openclaw.android.gateway.GatewayEndpoint
 import ai.openclaw.android.chat.OutgoingAttachment
 import ai.openclaw.android.node.CameraCaptureManager
 import ai.openclaw.android.node.CanvasController
 import ai.openclaw.android.node.ScreenRecordManager
 import ai.openclaw.android.node.SmsManager
+import ai.openclaw.android.ui.chat.PendingImageAttachment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
   private val runtime: NodeRuntime = (app as NodeApp).runtime
@@ -58,9 +68,42 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
   val chatMessages = runtime.chatMessages
 
   // Draft text survives activity recreation (image picker, rotation, etc.)
-  private val _chatDraftText = kotlinx.coroutines.flow.MutableStateFlow("")
+  private val _chatDraftText = MutableStateFlow("")
   val chatDraftText: StateFlow<String> = _chatDraftText
   fun setChatDraftText(text: String) { _chatDraftText.value = text }
+
+  // Shared images from external share intents
+  private val _sharedImages = MutableStateFlow<List<PendingImageAttachment>>(emptyList())
+  val sharedImages: StateFlow<List<PendingImageAttachment>> = _sharedImages
+
+  fun addSharedImages(uris: List<Uri>, resolver: ContentResolver) {
+    viewModelScope.launch(Dispatchers.IO) {
+      val images = uris.take(8).mapNotNull { uri ->
+        try {
+          val mimeType = resolver.getType(uri) ?: "image/*"
+          val fileName = (uri.lastPathSegment ?: "image").substringAfterLast('/')
+          val bytes = resolver.openInputStream(uri)?.use { input ->
+            val out = ByteArrayOutputStream()
+            input.copyTo(out)
+            out.toByteArray()
+          } ?: return@mapNotNull null
+          if (bytes.isEmpty()) return@mapNotNull null
+          val base64 = Base64.encodeToString(bytes, Base64.NO_WRAP)
+          PendingImageAttachment(
+            id = uri.toString() + "#" + System.currentTimeMillis(),
+            fileName = fileName,
+            mimeType = mimeType,
+            base64 = base64,
+          )
+        } catch (_: Throwable) { null }
+      }
+      withContext(Dispatchers.Main) {
+        _sharedImages.value = _sharedImages.value + images
+      }
+    }
+  }
+
+  fun clearSharedImages() { _sharedImages.value = emptyList() }
   val chatError: StateFlow<String?> = runtime.chatError
   val chatHealthOk: StateFlow<Boolean> = runtime.chatHealthOk
   val chatThinkingLevel: StateFlow<String> = runtime.chatThinkingLevel
