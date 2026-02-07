@@ -336,6 +336,26 @@ class NodeRuntime(context: Context) {
         }
     }
 
+    // Notify on new assistant replies when app is backgrounded
+    var lastNotifiedSignature: String? = null
+    scope.launch {
+      combine(chatMessages, isForeground) { msgs, foreground -> Pair(msgs, foreground) }
+        .collect { (msgs, foreground) ->
+          if (foreground) {
+            lastNotifiedSignature = null
+            return@collect
+          }
+
+          val lastAssistant = msgs.lastOrNull { it.role == "assistant" } ?: return@collect
+          val text = lastAssistant.content.mapNotNull { it.text }.joinToString(" ").trim()
+          val preview = if (text.isNotEmpty()) text else "New reply received"
+          val signature = "${lastAssistant.timestampMs ?: 0}:${preview}"
+          if (signature == lastNotifiedSignature) return@collect
+          lastNotifiedSignature = signature
+          ChatNotificationHelper.notifyReply(appContext, "SoLoBot replied", preview)
+        }
+    }
+
     scope.launch {
       talkEnabled.collect { enabled ->
         talkMode.setEnabled(enabled)

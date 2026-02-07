@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
@@ -42,10 +45,25 @@ fun ChatMarkdown(text: String, textColor: Color) {
         is ChatMarkdownBlock.Text -> {
           val trimmed = b.text.trimEnd()
           if (trimmed.isEmpty()) continue
-          Text(
-            text = parseInlineMarkdown(trimmed, inlineCodeBg = inlineCodeBg),
-            style = MaterialTheme.typography.bodyMedium,
-            color = textColor,
+          val uriHandler = LocalUriHandler.current
+          val annotated = parseInlineMarkdownWithLinks(
+            trimmed,
+            inlineCodeBg = inlineCodeBg,
+            linkColor = MaterialTheme.colorScheme.primary,
+          )
+          ClickableText(
+            text = annotated,
+            style = MaterialTheme.typography.bodyMedium.copy(color = textColor),
+            onClick = { offset ->
+              annotated.getStringAnnotations(tag = "URL", start = offset, end = offset)
+                .firstOrNull()?.let { ann ->
+                  try {
+                    uriHandler.openUri(ann.item)
+                  } catch (_: Throwable) {
+                    // no-op
+                  }
+                }
+            },
           )
         }
         is ChatMarkdownBlock.Code -> {
@@ -126,12 +144,36 @@ private fun splitInlineImages(text: String): List<ChatMarkdownBlock> {
   return out
 }
 
-private fun parseInlineMarkdown(text: String, inlineCodeBg: androidx.compose.ui.graphics.Color): AnnotatedString {
+private val urlRegex =
+  Regex("(https?://[\\w\\-._~:/?#\\[\\]@!$&'()*+,;=%]+|www\\.[\\w\\-._~:/?#\\[\\]@!$&'()*+,;=%]+)")
+
+private fun parseInlineMarkdownWithLinks(
+  text: String,
+  inlineCodeBg: androidx.compose.ui.graphics.Color,
+  linkColor: androidx.compose.ui.graphics.Color,
+): AnnotatedString {
   if (text.isEmpty()) return AnnotatedString("")
+
+  val linkStyle = SpanStyle(
+    color = linkColor,
+    textDecoration = TextDecoration.Underline,
+  )
 
   val out = buildAnnotatedString {
     var i = 0
     while (i < text.length) {
+      // URL detection (only when URL starts at current index)
+      val urlMatch = urlRegex.find(text, startIndex = i)
+      if (urlMatch != null && urlMatch.range.first == i) {
+        val rawUrl = urlMatch.value
+        val resolvedUrl = if (rawUrl.startsWith("http")) rawUrl else "https://$rawUrl"
+        pushStringAnnotation(tag = "URL", annotation = resolvedUrl)
+        withStyle(linkStyle) { append(rawUrl) }
+        pop()
+        i = urlMatch.range.last + 1
+        continue
+      }
+
       if (text.startsWith("**", startIndex = i)) {
         val end = text.indexOf("**", startIndex = i + 2)
         if (end > i + 2) {
