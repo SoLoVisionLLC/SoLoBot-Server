@@ -439,7 +439,11 @@ class TalkModeManager(
       val content = obj["content"] as? JsonArray ?: continue
       val text =
         content.mapNotNull { entry ->
-          entry.asObjectOrNull()?.get("text")?.asStringOrNull()?.trim()
+          val block = entry.asObjectOrNull() ?: return@mapNotNull null
+          // Skip tool_use, tool_result, and other non-text content blocks
+          val type = block["type"].asStringOrNull()
+          if (type != null && type != "text") return@mapNotNull null
+          block["text"]?.asStringOrNull()?.trim()
         }.filter { it.isNotEmpty() }
       if (text.isNotEmpty()) return text.joinToString("\n")
     }
@@ -452,7 +456,7 @@ class TalkModeManager(
       Log.w(tag, "Unknown talk directive keys: ${parsed.unknownKeys}")
     }
     val directive = parsed.directive
-    val cleaned = parsed.stripped.trim()
+    val cleaned = TtsSanitizer.sanitize(parsed.stripped)
     if (cleaned.isEmpty()) return
     _lastAssistantText.value = cleaned
 
