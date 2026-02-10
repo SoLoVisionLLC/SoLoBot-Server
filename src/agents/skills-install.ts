@@ -40,6 +40,31 @@ function isNodeReadableStream(value: unknown): value is NodeJS.ReadableStream {
   return Boolean(value && typeof (value as NodeJS.ReadableStream).pipe === "function");
 }
 
+function detectPlatformIncompatibilityHint(output: string): string | undefined {
+  const hay = output.toLowerCase();
+
+  // brew formula requirement style (common for arch-specific tools).
+  if (hay.includes("required: arm64") || hay.includes("arm64 architecture")) {
+    if (process.arch !== "arm64") {
+      return `Not supported on this machine architecture (requires arm64; current ${process.arch}).`;
+    }
+  }
+
+  // Generic platform mismatch hints.
+  if (hay.includes("requires macos") || hay.includes("macos is required")) {
+    if (process.platform !== "darwin") {
+      return `Not supported on this OS (requires macOS; current ${process.platform}).`;
+    }
+  }
+  if (hay.includes("requires linux") || hay.includes("linux is required")) {
+    if (process.platform !== "linux") {
+      return `Not supported on this OS (requires Linux; current ${process.platform}).`;
+    }
+  }
+
+  return undefined;
+}
+
 function summarizeInstallOutput(text: string): string | undefined {
   const raw = text.trim();
   if (!raw) {
@@ -73,10 +98,12 @@ function formatInstallFailureMessage(result: {
 }): string {
   const code = typeof result.code === "number" ? `exit ${result.code}` : "unknown exit";
   const summary = summarizeInstallOutput(result.stderr) ?? summarizeInstallOutput(result.stdout);
+  const hint = detectPlatformIncompatibilityHint(`${result.stderr}
+${result.stdout}`);
   if (!summary) {
-    return `Install failed (${code})`;
+    return hint ? `Install failed (${code}): ${hint}` : `Install failed (${code})`;
   }
-  return `Install failed (${code}): ${summary}`;
+  return hint ? `Install failed (${code}): ${hint} ${summary}` : `Install failed (${code}): ${summary}`;
 }
 
 function withWarnings(result: SkillInstallResult, warnings: string[]): SkillInstallResult {
