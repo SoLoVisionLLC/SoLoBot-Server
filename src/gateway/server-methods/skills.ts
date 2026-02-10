@@ -149,11 +149,9 @@ export const skillsHandlers: GatewayRequestHandlers = {
       timeoutMs: p.timeoutMs,
       config: cfg,
     });
-    respond(
-      result.ok,
-      result,
-      result.ok ? undefined : errorShape(ErrorCodes.UNAVAILABLE, result.message),
-    );
+    // Always respond with ok=true so the caller can display full stdout/stderr in the UI.
+    // The SkillInstallResult carries its own result.ok + message.
+    respond(true, result, undefined);
   },
   "skills.update": async ({ params, respond }) => {
     if (!validateSkillsUpdateParams(params)) {

@@ -654,12 +654,23 @@ export async function installSkill(params: SkillInstallRequest): Promise<SkillIn
   const prefs = resolveSkillsInstallPreferences(params.config);
   const command = buildInstallCommand(spec, prefs);
   if (command.error) {
+    const debug = {
+      skill: {
+        name: entry.skill.name,
+        source: entry.skill.source,
+        baseDir: entry.skill.baseDir,
+        filePath: entry.skill.filePath,
+      },
+      installId: params.installId,
+      spec,
+    };
+
     return withWarnings(
       {
         ok: false,
         message: command.error,
         stdout: "",
-        stderr: "",
+        stderr: `Invalid installer spec (debug follows)\n${JSON.stringify(debug, null, 2)}`,
         code: null,
       },
       warnings,
