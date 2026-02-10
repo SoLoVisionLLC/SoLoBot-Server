@@ -393,6 +393,203 @@ async function resolveBrewBinDir(timeoutMs: number, brewExe?: string): Promise<s
   return undefined;
 }
 
+type PrereqInstallAttempt = {
+  bin: string;
+  ok: boolean;
+  message: string;
+  stdout: string;
+  stderr: string;
+  code: number | null;
+};
+
+const BIN_INSTALL_ALLOWLIST: Record<
+  string,
+  { apt?: string[]; brew?: string[]; node?: string[]; go?: string[] }
+> = {
+  // common tooling
+  git: { apt: ["git"], brew: ["git"] },
+  curl: { apt: ["curl"], brew: ["curl"] },
+  unzip: { apt: ["unzip"], brew: ["unzip"] },
+  tar: { apt: ["tar"], brew: ["gnu-tar"] },
+
+  // media / camera / image tooling
+  ffmpeg: { apt: ["ffmpeg"], brew: ["ffmpeg"] },
+  convert: { apt: ["imagemagick"], brew: ["imagemagick"] },
+
+  // language runtimes / package managers
+  go: { apt: ["golang-go"], brew: ["go"] },
+  uv: { apt: [], brew: ["uv"] },
+  python3: { apt: ["python3"], brew: ["python"] },
+  pip3: { apt: ["python3-pip"], brew: ["python"] },
+};
+
+function uniqueNonEmpty(values: Array<string | undefined | null>): string[] {
+  return [...new Set(values.map((v) => (v ?? "").trim()).filter(Boolean))];
+}
+
+function canRunApt(): boolean {
+  if (process.platform !== "linux") return false;
+  // apt-get must be present and we must be root (or have sudo, which we don't assume here).
+  return hasBinary("apt-get") && typeof process.getuid === "function" && process.getuid() === 0;
+}
+
+async function tryInstallPrereqBin(params: {
+  bin: string;
+  prefs: SkillsInstallPreferences;
+  brewExe: string | null;
+  timeoutMs: number;
+}): Promise<PrereqInstallAttempt> {
+  const { bin, prefs, brewExe, timeoutMs } = params;
+  const allow = BIN_INSTALL_ALLOWLIST[bin];
+  if (!allow) {
+    return {
+      bin,
+      ok: false,
+      message: `No auto-installer allowlisted for missing binary: ${bin}`,
+      stdout: "",
+      stderr: "",
+      code: null,
+    };
+  }
+
+  const attempts: Array<{ kind: string; argv: string[] }> = [];
+
+  // Prefer brew when requested and available.
+  if (prefs.preferBrew && brewExe && allow.brew && allow.brew.length > 0) {
+    for (const formula of allow.brew) attempts.push({ kind: "brew", argv: [brewExe, "install", formula] });
+  }
+
+  // apt is linux-only + root-required in our deployment.
+  if (canRunApt() && allow.apt && allow.apt.length > 0) {
+    // Keep it simple: install packages directly. (We intentionally avoid apt-get update here.)
+    attempts.push({ kind: "apt", argv: ["apt-get", "install", "-y", ...allow.apt] });
+  }
+
+  // As a last resort, try node global install if mapped.
+  if (allow.node && allow.node.length > 0) {
+    for (const pkg of allow.node) attempts.push({ kind: "node", argv: buildNodeInstallCommand(pkg, prefs) });
+  }
+
+  // As a last resort, try go install if mapped.
+  if (allow.go && allow.go.length > 0) {
+    for (const mod of allow.go) attempts.push({ kind: "go", argv: ["go", "install", mod] });
+  }
+
+  if (attempts.length == 0) {
+    const aptNote = hasBinary("apt-get") && process.platform === "linux" ? " (apt-get present but needs root)" : "";
+    return {
+      bin,
+      ok: false,
+      message: `No applicable installer for ${bin}${aptNote}`,
+      stdout: "",
+      stderr: "",
+      code: null,
+    };
+  }
+
+  for (const attempt of attempts) {
+    const res = await runCommandWithTimeout(attempt.argv, { timeoutMs });
+    if (res.code === 0) {
+      return {
+        bin,
+        ok: true,
+        message: `Installed prerequisite (${attempt.kind}): ${bin}`,
+        stdout: res.stdout.trim(),
+        stderr: res.stderr.trim(),
+        code: res.code,
+      };
+    }
+  }
+
+  // Return the last attempt output for debugging.
+  const last = attempts.at(-1)!;
+  const res = await runCommandWithTimeout(last.argv, { timeoutMs });
+  return {
+    bin,
+    ok: false,
+    message: `Failed to auto-install prerequisite (${last.kind}): ${bin}`,
+    stdout: res.stdout.trim(),
+    stderr: res.stderr.trim(),
+    code: res.code,
+  };
+}
+
+async function ensurePrerequisiteBins(params: {
+  entry: SkillEntry;
+  spec: SkillInstallSpec;
+  prefs: SkillsInstallPreferences;
+  brewExe: string | null;
+  timeoutMs: number;
+}): Promise<{
+  ok: boolean;
+  message?: string;
+  stdout: string;
+  stderr: string;
+  warnings: string[];
+}> {
+  const { entry, spec, prefs, brewExe, timeoutMs } = params;
+  const warnings: string[] = [];
+
+  const specBins = (spec.bins ?? []).map((b) => String(b).trim()).filter(Boolean);
+  const requiredBins = uniqueNonEmpty([...(entry.metadata?.requires?.bins ?? []), ...specBins]);
+  const anyBins = uniqueNonEmpty(entry.metadata?.requires?.anyBins ?? []);
+
+  const missingRequired = requiredBins.filter((bin) => !hasBinary(bin));
+  const hasAny = anyBins.length == 0 ? true : anyBins.some((bin) => hasBinary(bin));
+
+  // If anyBins is specified and none are present, we can't safely choose which one to install.
+  if (!hasAny && anyBins.length > 0) {
+    return {
+      ok: false,
+      message: `Missing prerequisite: need one of [${anyBins.join(", ")}]`,
+      stdout: "",
+      stderr: "",
+      warnings,
+    };
+  }
+
+  if (missingRequired.length === 0) {
+    return { ok: true, stdout: "", stderr: "", warnings };
+  }
+
+  const stdoutParts: string[] = [];
+  const stderrParts: string[] = [];
+  for (const bin of missingRequired) {
+    const attempt = await tryInstallPrereqBin({ bin, prefs, brewExe, timeoutMs });
+    stdoutParts.push(`==> prereq ${bin}: ${attempt.message}`, attempt.stdout);
+    if (attempt.stderr) stderrParts.push(`==> prereq ${bin} stderr`, attempt.stderr);
+    if (!attempt.ok) {
+      return {
+        ok: false,
+        message: attempt.message,
+        stdout: stdoutParts.filter(Boolean).join("
+"),
+        stderr: stderrParts.filter(Boolean).join("
+"),
+        warnings,
+      };
+    }
+  }
+
+  // Re-check after installs.
+  const stillMissing = missingRequired.filter((bin) => !hasBinary(bin));
+  if (stillMissing.length > 0) {
+    return {
+      ok: false,
+      message: `Prerequisites still missing after auto-install: ${stillMissing.join(", ")}`,
+      stdout: stdoutParts.filter(Boolean).join("
+"),
+      stderr: stderrParts.filter(Boolean).join("
+"),
+      warnings,
+    };
+  }
+
+  return { ok: true, stdout: stdoutParts.filter(Boolean).join("
+"), stderr: stderrParts.filter(Boolean).join("
+"), warnings };
+}
+
 export async function installSkill(params: SkillInstallRequest): Promise<SkillInstallResult> {
   const timeoutMs = Math.min(Math.max(params.timeoutMs ?? 300_000, 1_000), 900_000);
   const workspaceDir = resolveUserPath(params.workspaceDir);
@@ -450,6 +647,28 @@ export async function installSkill(params: SkillInstallRequest): Promise<SkillIn
         message: "brew not installed",
         stdout: "",
         stderr: "",
+        code: null,
+      },
+      warnings,
+    );
+  }
+
+  // Best-effort auto-install of allowlisted prerequisites (bins) before running the installer.
+  const prereq = await ensurePrerequisiteBins({
+    entry,
+    spec,
+    prefs,
+    brewExe,
+    timeoutMs,
+  });
+  warnings.push(...prereq.warnings);
+  if (!prereq.ok) {
+    return withWarnings(
+      {
+        ok: false,
+        message: prereq.message ?? "Missing prerequisites",
+        stdout: prereq.stdout.trim(),
+        stderr: prereq.stderr.trim(),
         code: null,
       },
       warnings,
@@ -558,12 +777,16 @@ export async function installSkill(params: SkillInstallRequest): Promise<SkillIn
   })();
 
   const success = result.code === 0;
+
+  const mergedStdout = [prereq.stdout, result.stdout].map((v) => v.trim()).filter(Boolean).join("\n");
+  const mergedStderr = [prereq.stderr, result.stderr].map((v) => v.trim()).filter(Boolean).join("\n");
+
   return withWarnings(
     {
       ok: success,
-      message: success ? "Installed" : formatInstallFailureMessage(result),
-      stdout: result.stdout.trim(),
-      stderr: result.stderr.trim(),
+      message: success ? "Installed" : formatInstallFailureMessage({ ...result, stdout: mergedStdout, stderr: mergedStderr }),
+      stdout: mergedStdout,
+      stderr: mergedStderr,
       code: result.code,
     },
     warnings,
